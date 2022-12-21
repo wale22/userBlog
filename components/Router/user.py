@@ -16,7 +16,7 @@ router=APIRouter(
 def create_user(request: s.User,db:Session=Depends(get_db)):
    user_created=db.query(Users).filter(Users.email == request.email).first()
    if user_created:
-      HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with {request.email} already exist") 
+      raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with {request.email} already exist")
    user=Users(username=request.username,email=request.email,password=Hash.encrypt(request.password))
    db.add(user)
    db.commit()
@@ -29,10 +29,10 @@ def create_user(request: s.User,db:Session=Depends(get_db)):
 def login(request:s.authenticate, db:Session=Depends(get_db)):
    user=db.query(Users).filter(Users.email == request.email).first()
    if not user:
-      HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with {request.email}  does not exist") 
+      raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with {request.email}  does not exist") 
    if Hash.decrypt(request.password,user.password):
-      return user
-   HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail=f"invalid password") 
+      raise user
+   return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail=f"invalid password") 
    
   
 # getting individual user 
@@ -40,7 +40,7 @@ def login(request:s.authenticate, db:Session=Depends(get_db)):
 def retrieve_user(id,db:Session=Depends(get_db)):
    user=db.query(Users).filter(Users.id == id).first()
    if not user:
-      HTTPException(status_codes=status.HTTP_404_NOT_FOUND,detail="user does not exist")
+      raise HTTPException(status_codes=status.HTTP_404_NOT_FOUND,detail="user does not exist")
    return user
 
 
@@ -56,7 +56,7 @@ def retrieve_blogs(db:Session=Depends(get_db)):
 def update_blog(id, request:s.User, db:Session=Depends(get_db),):
    user=db.query(Users).get(id)
    if not user:
-      HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="blog does not exist ")
+      raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="blog does not exist ")
    user.title=request.username  
    user.body=request.email
    user.description=request.password
@@ -67,6 +67,6 @@ def update_blog(id, request:s.User, db:Session=Depends(get_db),):
 #deleting user
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_blog(id,db:Session=Depends(get_db)):
-    db.query(Users).filter(Users.id == id).delete(synchronize_session=False)
-    db.commit()
-    return 'Blog with the id {id} has been deleted'
+   db.query(Users).filter(Users.id == id).delete(synchronize_session=False)
+   db.commit()
+   return 'Blog with the id {id} has been deleted'

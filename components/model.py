@@ -25,5 +25,5 @@ class Blogs(Base):
     body= Column(Text())
     description=Column(Text())
     userId=Column(Integer,ForeignKey(Users.id))
-    creator=relationship("User", back_populates="blog")
+    creator=relationship("Users", back_populates="blogs")
     

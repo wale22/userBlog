@@ -66,7 +66,7 @@ def update_blogs(id, request:s.Blog, db:Session=Depends(get_db)):
 def update_blog(id, request:s.Blog, db:Session=Depends(get_db),):
     blog=db.query(Blogs).get(id)
     if not blog:
-        HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="blog does not exist ")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="blog does not exist ")
     blog.title=request.title 
     blog.body=request.body
     blog.description=request.description
