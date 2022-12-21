@@ -7,6 +7,7 @@ class Blog (BaseModel):
     title:str
     body:str
     userId:int
+    description:str
     class Config:
         orm_mode = True
         
@@ -25,8 +26,8 @@ class User(BaseModel):
     
 #user response model
 class showUser():
+    id:int
     username:str
-    password:str
     email:str
     blogs:List[Blog]=[]
     class Config:
@@ -35,10 +36,11 @@ class showUser():
 
 
 
-class ShowBlog(BaseModel):
-    title: str
-    body:str
+class ShowBlog(Blog):
+    id:int
     creator: showUser
 
-    class Config():
-        orm_mode=True
+
+class authenticate():
+    email:str
+    password:str

@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 
     
     
-class User(Base):
+class Users(Base):
     __tablename__='users'
     id=Column(Integer, primary_key=True, index=True)
     username=Column(Text)
@@ -24,6 +24,6 @@ class Blogs(Base):
     title=Column(Text())
     body= Column(Text())
     description=Column(Text())
-    userId=Column(Integer,ForeignKey(User.id))
+    userId=Column(Integer,ForeignKey(Users.id))
     creator=relationship("User", back_populates="blog")
     
