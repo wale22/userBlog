@@ -30,7 +30,7 @@ def login(request:s.authenticate, db:Session=Depends(get_db)):
    user=db.query(Users).filter(Users.email == request.email).first()
    if not user:
       HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with {request.email}  does not exist") 
-   if user.password == request.password:
+   if Hash.decrypt(request.password,user.password):
       return user
    HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail=f"invalid password") 
    
