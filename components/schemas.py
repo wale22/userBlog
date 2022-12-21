@@ -25,7 +25,7 @@ class User(BaseModel):
 
     
 #user response model
-class showUser():
+class showUser(BaseModel):
     id:int
     username:str
     email:str
@@ -36,11 +36,16 @@ class showUser():
 
 
 
-class ShowBlog(Blog):
+class ShowBlog(BaseModel):
     id:int
     creator: showUser
+    title:str
+    body:str
+    description:str
+    class Config:
+        orm_mode = True
 
 
-class authenticate():
+class authenticate(BaseModel):
     email:str
     password:str
