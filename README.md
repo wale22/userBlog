@@ -17,7 +17,7 @@ page in other to use this functionality.<h5></P>
 
 <h2>Usage:</h2>
 <p>To use this project the project needs to be connected to the database,this task can easily be done by adding the link to your database to the project.
-The project contains a file name called 'url.py'.</p><br/>
+The project contains a file name called 'components/url.py'.</p><br/>
 <h6>
 <p>it can be added in the format:(mysql) url='mysql://username:pwd@hostName/databaseName'</p>
 <p>it can be added in the format: (postgress)url='postgress://username:pwd@hostName/databaseName'</p>
