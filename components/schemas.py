@@ -34,11 +34,16 @@ class showUser(BaseModel):
         orm_mode = True
 
 
-
+class usr(BaseModel):
+    id:int
+    username:str
+    email:str
+    class Config:
+        orm_mode = True
 
 class ShowBlog(BaseModel):
     id:int
-    creator: showUser
+    creator: usr
     title:str
     body:str
     description:str

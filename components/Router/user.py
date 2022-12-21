@@ -31,8 +31,9 @@ def login(request:s.authenticate, db:Session=Depends(get_db)):
    if not user:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with {request.email}  does not exist") 
    if Hash.decrypt(request.password,user.password):
-      raise user
-   return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail=f"invalid password") 
+      return user
+   raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail=f"invalid password") 
+   
    
   
 # getting individual user 
@@ -46,27 +47,27 @@ def retrieve_user(id,db:Session=Depends(get_db)):
 
 #retrieving all the users
 @router.get('/',status_code=status.HTTP_200_OK)
-def retrieve_blogs(db:Session=Depends(get_db)):
+def retrieve_users(db:Session=Depends(get_db)):
    users=db.query(Users).all()
    return users
 
 
 #updating user
 @router.put('/{id}', status_code=status.HTTP_200_OK)
-def update_blog(id, request:s.User, db:Session=Depends(get_db),):
+def update_user(id, request:s.User, db:Session=Depends(get_db),):
    user=db.query(Users).get(id)
    if not user:
       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="blog does not exist ")
-   user.title=request.username  
-   user.body=request.email
-   user.description=request.password
+   user.username=request.username  
+   user.email=request.email
+   user.password=Hash.encrypt(request.password)
    db.commit()
    db.refresh(user)
    return user
 
 #deleting user
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_blog(id,db:Session=Depends(get_db)):
+def delete_user(id,db:Session=Depends(get_db)):
    db.query(Users).filter(Users.id == id).delete(synchronize_session=False)
    db.commit()
    return 'Blog with the id {id} has been deleted'

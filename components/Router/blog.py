@@ -11,7 +11,7 @@ router=APIRouter(
 
 
 # creating blog
-@router.post('/',status_code=status.HTTP_201_CREATED)
+@router.post('/',status_code=status.HTTP_201_CREATED,response_model=s.ShowBlog)
 def create_blog(request:s.Blog, db: Session = Depends(get_db)):
     new_blog=Blogs(title=request.title, body=request.body, description=request.description, userId=request.userId)
     print(new_blog)
@@ -71,4 +71,5 @@ def update_blog(id, request:s.Blog, db:Session=Depends(get_db),):
     blog.body=request.body
     blog.description=request.description
     db.commit()
-    
+    db.refresh(blog)
+    return blog
