@@ -14,7 +14,7 @@ class User(Base):
     username=Column(Text)
     password= Column(Text)
     email=Column(Text)
-    blog=relationship("Blogs", back_populates="creator")
+    blogs=relationship("Blogs", back_populates="creator")
 
 
 
@@ -23,6 +23,7 @@ class Blogs(Base):
     id=Column(Integer, primary_key=True, index=True)
     title=Column(Text())
     body= Column(Text())
+    description=Column(Text())
     userId=Column(Integer,ForeignKey(User.id))
     creator=relationship("User", back_populates="blog")
     

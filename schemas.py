@@ -1,17 +1,15 @@
 from pydantic import BaseModel
+from typing import List
 
- 
+
 # blog schema
 class Blog (BaseModel):
     title:str
     body:str
-    
+    userId:int
     class Config:
         orm_mode = True
         
-# blog response model      
-class showBlog(Blog):
-    pass
 
 
 
@@ -23,7 +21,24 @@ class User(BaseModel):
     
     class Config:
         orm_mode = True
+
     
 #user response model
-class showUser(User):
-    pass
+class showUser():
+    username:str
+    password:str
+    email:str
+    blogs:List[Blog]=[]
+    class Config:
+        orm_mode = True
+
+
+
+
+class ShowBlog(BaseModel):
+    title: str
+    body:str
+    creator: showUser
+
+    class Config():
+        orm_mode=True
