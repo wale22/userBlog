@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from .url import URL
 
-engine=create_engine("mysql://wale:walexi202@localhost/memeHouse")
+engine=create_engine(URL)
 sessionLocal=sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base=declarative_base()
 
